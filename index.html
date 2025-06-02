@@ -193,7 +193,7 @@
 
 				`;
 			}
-			else if (hash === 'access_token') {
+			else if (hash.includes('access_token=')) {
 				const { data, error } = await supabase.auth.getSession();
 
 				if (data.session) {
