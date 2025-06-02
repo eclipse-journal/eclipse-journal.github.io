@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	<title>Eclipse journal</title>
+
+	<link rel="icon" type="image/x-icon" href="resources/logo.svg">
+	<link rel="stylesheet" href="css/colors.css">
+	<link rel="stylesheet" href="css/eclipse.css">
+
+	<script src="js/crypt/crypt.js" type="module"></script>
+
+	<script src="js/supabase.js"></script>
+	</head>
+	<body>
+		<script src="//cdn.jsdelivr.net/npm/eruda"></script>
+		<script>eruda.init();</script>
+
+		<nav class="header">
+			<div id="nav-left">
+				<img id="logo" src="resources/logo.svg"></img>
+				<button data-page="home" data-target="home">Home</button>
+				<button data-page="home" data-target="about">About</button>
+				<button data-page="home" data-target="features">Features</button>
+				<a href="mailto:sshlvl.contact@gmail.com">Contact</a>
+			</div>
+
+			<div id="nav-right">
+				<a id="appButton" href="#app">Open app</a>
+				<a href="#login" id="loginButton">Login</a> |
+				<a href="#signup" id="signUpButton">Signup</a>
+				<img id="themeButton" src="resources/dark_mode.svg" data-icon="light"></img>
+			</div>
+		</nav>
+
+		<div id="content"></div>
+
+		<footer class="fade-slide-up">
+			<div class="footer-container">
+				<div class="footer-section">
+					<h4>Navigation</h4>
+					<button data-page="home" data-target="home">Home</button>
+					<button data-page="home" data-target="about">About</button>
+					<button data-page="home" data-target="features">Features</button>
+					<a id="appButton" href="#app">open app</a>
+					<a href="#login">Login</a>
+					<a href="#signup">Signup</a>
+				</div>
+				<div class="footer-section">
+					<h4>This Project</h4>
+					<p>Made with care by one privacy-loving dev. No trackers, no nonsense.</p>
+					<a href="mailto:sshlvl.contact@gmail.com">Contact Me</a>
+					<a href="https://github.com/eclipse-journal/eclipse-journal" target="_blank">GitHub Repo</a>
+				</div>
+				<div class="footer-section">
+					<h4>Credits</h4>
+					<p>Fonts, icons, and tools that made this possible:</p>
+					<a href="https://github.com" target="_blank">Github</a>
+					<a href="https://developer.mozilla.org/" target="_blank">MDN</a>
+					<a href="https://code.visualstudio.com/" target="_blank">VSCode</a>
+					<a href="https://emscripten.org/" target="_blank">Emscripten</a>
+					<a href="https://supabase.com/" target="_blank">Supabase</a>
+					<a href="https://fonts.google.com/icons" target="_blank">Google material icons</a>
+				</div>
+			</div>
+			<p class="footer-bottom">&copy; 2025 Eclipse Journal. All your thoughts are yours — and stay that way.</p>
+		</footer>
+
+		<script>
+			document.querySelectorAll('img').forEach((element)=>{
+				element.setAttribute("draggable","false")
+			});
+
+			function isNav() {
+				const currentHash = window.location.hash.substring(1); 
+
+				return currentHash != "";
+			}
+
+			function updateNavButtons() {
+				const navButtons = document.querySelectorAll('button[data-target]');
+
+				navButtons.forEach(button => {
+					button.onclick = function (){
+						const targetId = button.getAttribute('data-target');
+						const targetPage = button.getAttribute('data-page');
+						if (!targetId) return;
+						
+						history.pushState(null, '', '#' + targetPage);
+						window.dispatchEvent(new HashChangeEvent("hashchange"));
+
+						const targetSection = document.getElementById(targetId);
+						if (targetSection) {
+							targetSection.scrollIntoView({ behavior: 'smooth' });
+						}
+					};
+				});
+			}
+			
+			function setupSignupForm() {
+				const form = document.querySelector('#SignupForm');
+				if (!form) return;
+
+				form.addEventListener('submit', async function (event) {
+					event.preventDefault();
+
+					let email = document.querySelector('#EmailField').value;
+					let pass = document.querySelector('#PassField').value;
+					let confirm = document.querySelector('#ConfirmField').value;
+
+					if (pass !== confirm) {
+						alert("Passwords don't match!");
+						return;
+					}
+
+					try {
+						const { data, error } = await supabaseClient.auth.signUp({
+							email: email,
+							password: pass,
+						});
+
+						if (error) {
+							alert("Signup error: " + error.message);
+						} else {
+							alert("Signup successful! Please check your email.");
+						}
+					} catch (e) {
+						console.error(e);
+						alert("Something went wrong.");
+					}
+				});
+			}
+
+			function loadContent() {
+			const hash = window.location.hash.substring(1) // remove #
+			let html = ''
+			if (hash === 'home') {
+				html = `
+					<section id="home" class="no-section-padding fade-slide-up">
+					<h1 id="titleText">Eclipse journal</h1>
+					<p id="descriptionText">
+						Eclipse journal is a private, secure and simple, personal journal for <b>everyone</b>.
+					</p>
+					<a id="signUpButton" href="#signup">Signup</a>
+					</section>
+
+					<section id="features">
+					<h2>Key Features</h2>
+					<div class="feature-grid">
+						<div class="feature-box fade-slide-up">
+							<h3>🔐 Next-level Encryption</h3>
+							<p>Our innovative and multi-layer encryption ensures your privacy and security.</p>
+						</div>
+						<div class="feature-box fade-slide-up">
+							<h3>🧘 Minimal Design</h3>
+							<p>Distraction-free writing with a clean interface.</p>
+						</div>
+						<div class="feature-box fade-slide-up">
+							<h3>🌙 Dark Mode</h3>
+							<p>Write comfortably any time, day or night.</p>
+						</div>
+						<div class="feature-box fade-slide-up">
+							<h3>☁️ Cloud Sync</h3>
+							<p>Access your entries from any device, securely.</p>
+						</div>
+						<div class="feature-box fade-slide-up">
+							<h3>📵 Offline-Ready</h3>
+							<p>Work on your journal even without internet — sync happens when you're back online.</p>
+						</div>
+						<div class="feature-box fade-slide-up">
+							<h3>📝 Markdown Support</h3>
+							<p>Format entries with bold, italics, lists, and more using simple Markdown syntax.</p>
+						</div>
+					</section>
+
+					<section id="about" class="fade-slide-up">
+						<h2>About Eclipse Journal</h2>
+						<p>
+							Eclipse Journal was born from a simple need: a private, secure, and distraction-free place to write — without the bloat, without trackers, and without compromise.
+						</p>
+						<p>
+							Unable to find a journaling tool that truly respected privacy while staying minimal and intuitive, we built one ourselves.
+						</p>
+						<p>
+							Eclipse Journal is for <b>everyone</b>: whether you're writing personal entries, creative ideas, or daily reflections, it's designed to stay out of your way — and out of anyone else's hands.
+						</p>
+						<p>
+							Eclipse Journal runs seamlessly in your browser, with encryption handled both on your device and securely on our servers. Your data is protected through multiple layers of security — designed so your thoughts are private, and stay that way.
+						</p>
+					</section>
+
+				`;
+			}
+			else if (hash === 'signup') {
+				html = `
+					<div id="SignupContainer">
+						<form id="SignupForm">
+						<h1>Signup</h1>
+						<input id="EmailField" type="email" placeholder="Email" required>
+						<input id="PassField" type="password" placeholder="Password" required>
+						<input id="ConfirmField" type="password" placeholder="Confirm password" required>
+						<h4>Be careful, if forgotten, data will be inaccessible and un-recoverable</h4>
+						<button type="submit">Signup</button>
+						</form>
+					</div>
+					`;
+			} else if (hash === 'login') {
+				html = `
+					login
+				`;
+			} else if (hash === 'app') {
+				html = `
+					app
+				`;
+			} else {
+				window.location.href = "404.html"
+			}
+			const content = document.getElementById('content');
+			content.innerHTML = html
+			updateNavButtons();
+			if (hash === 'signup') {
+				setupSignupForm();
+			}
+
+			content.classList.remove('loaded');
+			setTimeout(() => content.classList.add('loaded'), 50);
+			}
+
+			window.addEventListener('hashchange', loadContent);
+
+			if (!isNav()) {
+				window.location.hash = "#home";
+			} else {
+				loadContent();
+			}
+
+			function handleFadeSlide() {
+				const elements = document.querySelectorAll('.fade-slide-up');
+
+				elements.forEach(el => {
+					const rect = el.getBoundingClientRect();
+					const windowHeight = window.innerHeight;
+
+					if (rect.top <= windowHeight * 0.9) {
+					el.classList.add('visible');
+					} else {
+					el.classList.remove('visible');
+					}
+				});
+				}
+
+				window.addEventListener('scroll', handleFadeSlide);
+				window.addEventListener('load', () => {
+				handleFadeSlide();
+			});
+
+
+		</script>
+
+		<script>
+			const themeButton = document.getElementById('themeButton');
+			const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+			function applyTheme(theme) {
+				themeButton.dataset.icon = theme;
+				// alert(theme === 'dark' ? 'resources/light_mode.svg' : 'resources/dark_mode.svg')
+				themeButton.src = theme === 'dark' ? 'resources/light_mode.svg' : 'resources/dark_mode.svg';
+
+				const root = document.documentElement;
+
+				root.classList.add("theme-transition");
+
+				root.setAttribute("data-theme", theme);
+				localStorage.setItem("theme", theme);
+
+				setTimeout(() => {
+					root.classList.remove("theme-transition");
+				}, 300);
+			}
+
+
+			function getStoredTheme() {
+				return localStorage.getItem('theme');
+			}
+
+			function saveTheme(theme) {
+				localStorage.setItem('theme', theme);
+			}
+
+			function toggleTheme() {
+				const newTheme = document.documentElement.getAttribute('data-theme') == 'dark' ? "light" : "dark";
+				applyTheme(newTheme);
+				saveTheme(newTheme);
+			}
+
+			const storedTheme = getStoredTheme();
+			const initialTheme = storedTheme || (prefersDark ? 'dark' : 'light');
+			applyTheme(initialTheme);
+
+			themeButton.addEventListener('click', toggleTheme);
+			</script>
+
+	</body>
+</html>
