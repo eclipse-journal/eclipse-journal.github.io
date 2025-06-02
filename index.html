@@ -197,7 +197,7 @@
 				const { data, error } = await supabase.auth.getSession();
 
 				if (data.session) {
-					window.location.hash = '#dashboard';
+					window.location.hash = '#app';
 				} else {
 					console.error('Login failed or expired');
 					window.location.hash = '#login';
