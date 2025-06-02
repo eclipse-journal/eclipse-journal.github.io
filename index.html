@@ -117,7 +117,7 @@
 							email: email,
 							password: pass,
 							options: {
-								emailRedirectTo: 'https://eclipse-journal.github.io/#login'
+								emailRedirectTo: 'https://eclipse-journal.github.io/'
 							}
 						});
 
@@ -193,7 +193,7 @@
 
 				`;
 			}
-			else if (hash.includes('access_token=')) {
+			else if (hash === 'access_token') {
 				const { data, error } = await supabase.auth.getSession();
 
 				if (data.session) {
