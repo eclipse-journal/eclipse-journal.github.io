@@ -252,7 +252,7 @@ h2 {
   color: var(--color-heading);
 }
 
-#SignupForm {
+#SignupForm, #LoginForm {
   display: flex;
   flex-direction: column;
   flex: 1 1 300px;
@@ -268,7 +268,7 @@ h2 {
   text-align: center;
 }
 
-#SignupForm input {
+#SignupForm input, #LoginForm input {
   background-color: var(--color-bg-accent);
   font-family: 'Georgia', serif;
   border: 2px solid var(--color-accent-text);
@@ -277,18 +277,23 @@ h2 {
   width: 26em;
 }
 
-#SignupForm input::placeholder {
+#SignupForm input::placeholder, #LoginForm input::placeholder {
   color: var(--color-light-text);
 }
 
-#SignupForm button {
+#SignupForm button, #LoginForm button {
   margin-top: 0;
   padding-top: 0;
   padding-bottom: 1em;
   font-size: 2em;
 }
 
-#SignupForm h4 {
+#LoginForm button {
+  margin-top: 1em;
+  padding-bottom: 0.5em;
+}
+
+#SignupForm h4, #LoginForm h4 {
   font-size: 0.8em;
   padding:1em;
   margin-bottom: 0;
