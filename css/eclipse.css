@@ -275,9 +275,14 @@ h2 {
   border-radius: 8px;
   padding: 1em;
   width: 26em;
+  margin-top: 0.8em;
 }
 
 #SignupForm input::placeholder, #LoginForm input::placeholder {
+  color: var(--color-light-text);
+}
+
+#SignupForm input, #LoginForm input {
   color: var(--color-light-text);
 }
 
@@ -298,4 +303,7 @@ h2 {
   padding:1em;
   margin-bottom: 0;
   padding-bottom: 0;
+}
+#appButtonHome {
+  font-size: x-large;
 }

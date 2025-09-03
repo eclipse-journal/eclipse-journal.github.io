@@ -222,7 +222,7 @@
 				`;
 			}
 			else if (hash === 'access_token') {
-				const { data, error } = await supabase.auth.getSession();
+				const { data, error } = await supabaseClient.auth.getSession();
 
 				if (data.session) {
 					window.location.hash = '#app';
@@ -303,6 +303,19 @@
 				window.addEventListener('load', () => {
 				handleFadeSlide();
 			});
+
+			const { data, error } = await supabaseClient.auth.getSession();
+
+			if (data.session && error == null) {
+				document.getElementById('loginButton').remove();
+				document.getElementById('signUpButton').remove();
+				document.addEventListener("DOMContentLoaded", ()=>{
+					document.getElementById('signUpButton').remove()
+					let appButtonHome = document.getElementById('appButton').cloneNode(true)
+					appButtonHome.id = 'appButtonHome'
+					document.getElementById('home').appendChild(appButtonHome)
+				});
+			}
 
 
 		</script>
