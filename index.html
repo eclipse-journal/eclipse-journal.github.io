@@ -66,6 +66,8 @@
 		</footer>
 
 		<script type="module">
+			import * as crypt from "./js/crypt/crypt.js";
+
 			document.querySelectorAll('img').forEach((element)=>{
 				element.setAttribute("draggable","false")
 			});
@@ -152,6 +154,8 @@
 						if (error) {
 							alert("Login error: " + error.message);
 						} else {
+							const base64Key = await crypt.passwordToKey(pass);
+							localStorage.setItem("encryptionKey", base64Key);
 							window.location.hash = '#app';
 						}
 					} catch (e) {
@@ -316,6 +320,12 @@
 					document.getElementById('home').appendChild(appButtonHome)
 				});
 			}
+			else {
+				if(document.getElementById('appButton')) {
+					document.getElementById('appButton').remove();
+					document.getElementById('appButton').remove();
+				}
+			}
 
 
 		</script>
@@ -326,7 +336,6 @@
 
 			function applyTheme(theme) {
 				themeButton.dataset.icon = theme;
-				// alert(theme === 'dark' ? 'resources/light_mode.svg' : 'resources/dark_mode.svg')
 				themeButton.src = theme === 'dark' ? 'resources/light_mode.svg' : 'resources/dark_mode.svg';
 
 				const root = document.documentElement;
