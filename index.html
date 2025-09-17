@@ -67,6 +67,7 @@
 
 		<script type="module">
 			import * as crypt from "./js/crypt/crypt.js";
+			import * as API from "./js/api.js";
 
 			document.querySelectorAll('img').forEach((element)=>{
 				element.setAttribute("draggable","false")
@@ -165,7 +166,16 @@
 				});
 			}
 
+			async function get_journals() {
+				return API.api(null,(await supabaseClient.auth.getSession()).data.session.access_token,"get_journals");
+			}
+
+			async function save_journals() {
+
+			}
+
 			async function loadContent() {
+			console.log(await get_journals());
 			const hash = window.location.hash.substring(1) // remove #
 			let html = ''
 			if (hash === 'home') {
@@ -261,7 +271,7 @@
 				`;
 			} else if (hash === 'app') {
 				html = `
-					app
+					<textarea id="journalpage" rows="5" cols="30" placeholder="Enter text here."></textarea>
 				`;
 			} else {
 				window.location.href = "404.html"
